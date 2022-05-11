@@ -10,7 +10,8 @@ Library           SeleniumLibrary
 
 *** Variables ***
 ${URL}    http://automationpractice.com/index.php
-${BROWSER}    Chrome
+${BROWSER}    headlessfirefox
+#${BROWSER}    Firefox
 ${VALID USER}    ywh50680@jiooq.com
 ${VALID PASSWORD}    zaq12wsx
 ${SIGN IN}    xpath: //*[@id="header"]/div[2]/div/div/nav/div[1]/a
@@ -22,10 +23,11 @@ ${PICK}    xpath: /html/body/div/div[2]/div/div[2]/div/div[1]/ul[1]/li[7]/div/di
 ${ADDTC}    title: "Add to cart"
 ${WOMEN}      class: sf-with-ul
 ${BLOUSES}      xpath: //*[@id="block_top_menu"]/ul/li[1]/ul/li[1]/ul/li[2]/a
-${SCROLL_HELP}    xpath: //*[@id="informations_block_left_1"]/div/ul/li[1]/a
-${PRODUCT}    class: class: product-container
+${SCROLL_HELP}    xpath: /html/body/div/div[2]/div/div[3]/div[1]/section/p/a
+${PRODUCT}    class: product-container
 ${ADDBLOUSE}    xpath: //*[@id="center_column"]/ul/li/div/div[2]/div[2]/a[1]
-${PROCEEDtoCHECKOUT}    xpath: //*[@id="layer_cart"]/div[1]/div[2]/div[4]/a
+${PROCEEDtoCHECKOUT}    xpath: //*[contains(text(), "Proceed to checkout")]
+${FORM}     class: form-control
 *** Keywords ***
 Open browser to main page
     open browser    ${URL}    ${BROWSER}
@@ -66,8 +68,19 @@ change color to white
     run keyword and ignore error    click element    id: color_8
 
 add one
-    scroll element into view    //*[@id="center_column"]/p[2]/a[1]
-    click button     xpath: //*[@id="cart_quantity_up_2_7_0_0"]
+    sleep    2s
+    click button     class: icon-plus
 
 add to cart
     click button    id: add_to_cart
+
+Add comment
+    [Arguments]     ${msg}
+    scroll element into view    ${form}
+    input text    ${form}   {msg}
+
+Scroll To Element
+    [Arguments]  ${locator}
+    ${x}=        Get Horizontal Position  ${locator}
+    ${y}=        Get Vertical Position    ${locator}
+    Execute Javascript  window.scrollTo(${x}, ${y})

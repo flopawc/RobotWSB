@@ -1,26 +1,26 @@
 *** Settings ***
 Resource    resource.robot
-Library    SeleniumLibrary\\
-
+Library    SeleniumLibrary
 
 *** Test Cases ***
 Proceed through checkout
+    set selenium implicit wait    12s
     Open browser to main page
     go to blouses page
-    scroll element into view    ${SCROLL_HELP}
+    scroll to element    ${SCROLL_HELP}
     mouse over    ${PRODUCT}
     click element    ${ADDBLOUSE}
-    sleep    3s
-    wait until element is visible   ${PROCEEDtoCHECKOUT}
-    sleep    3s
-    add one
-    change color to white
-    add to cart
-    click element    class: btn btn-default button button-medium
+    wait until element is visible  ${proceedtocheckout}
+    click element    ${proceedtocheckout}
+    sleep    8s
+    scroll to element    ${proceedtocheckout}
+    click element    ${proceedtocheckout}
     Input email
     Input password
-
-    close window
+    log in
+    add comment     "witam państwa"
+    find element
+    close browser
 
 
 
