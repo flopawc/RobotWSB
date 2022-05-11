@@ -1,16 +1,11 @@
 --outputdir C:/Users/NBPFlorek/Desktop --timestampoutputs
 
 *** Settings ***
-Documentation     A resource file with reusable keywords and variables.
-...
-...               The system specific keywords created here form our own
-...               domain specific language. They utilize keywords provided
-...               by the imported SeleniumLibrary.
 Library           SeleniumLibrary
 
 *** Variables ***
 ${URL}    http://automationpractice.com/index.php
-${BROWSER}    headlessfirefox
+${BROWSER}    gc
 #${BROWSER}    Firefox
 ${VALID USER}    ywh50680@jiooq.com
 ${VALID PASSWORD}    zaq12wsx
@@ -23,11 +18,16 @@ ${PICK}    xpath: /html/body/div/div[2]/div/div[2]/div/div[1]/ul[1]/li[7]/div/di
 ${ADDTC}    title: "Add to cart"
 ${WOMEN}      class: sf-with-ul
 ${BLOUSES}      xpath: //*[@id="block_top_menu"]/ul/li[1]/ul/li[1]/ul/li[2]/a
-${SCROLL_HELP}    xpath: /html/body/div/div[2]/div/div[3]/div[1]/section/p/a
 ${PRODUCT}    class: product-container
 ${ADDBLOUSE}    xpath: //*[@id="center_column"]/ul/li/div/div[2]/div[2]/a[1]
 ${PROCEEDtoCHECKOUT}    xpath: //*[contains(text(), "Proceed to checkout")]
-${FORM}     class: form-control
+${PROCEEDtoCHECKOUT2}    xpath: //*[@id="center_column"]/p[2]/a[1]
+${proceedtocheckout3}    xpath: //*[@id="center_column"]/form/p/button
+${PROCEEDTOCHECKOUT4}    name : processCarrier
+${paybycheck}     xpath: //*[@id="HOOK_PAYMENT"]/div[2]/div/p/a
+${TOS}    name: cgv
+${confirmorder}    xpath: /html/body/div/div[2]/div/div[3]/div/form/p/button
+
 *** Keywords ***
 Open browser to main page
     open browser    ${URL}    ${BROWSER}
@@ -44,7 +44,7 @@ Input email
 Input password
     input text    ${PASSWORD FIELD}    ${VALID PASSWORD}
 
-Log in
+Confirm
     click element    ${LOG IN}
 
 Close window
@@ -64,23 +64,21 @@ go to blouses page
     wait until element is visible    ${BLOUSES}
     click element    ${BLOUSES}
 
-change color to white
-    run keyword and ignore error    click element    id: color_8
-
-add one
-    sleep    2s
-    click button     class: icon-plus
-
-add to cart
-    click button    id: add_to_cart
-
-Add comment
-    [Arguments]     ${msg}
-    scroll element into view    ${form}
-    input text    ${form}   {msg}
-
 Scroll To Element
     [Arguments]  ${locator}
     ${x}=        Get Horizontal Position  ${locator}
     ${y}=        Get Vertical Position    ${locator}
     Execute Javascript  window.scrollTo(${x}, ${y})
+
+Log in
+    input email
+    input password
+    confirm
+
+go through checkout
+    scroll to element    ${proceedtocheckout3}
+    click button    ${proceedtocheckout3}
+    click element    ${tos}
+    click element    ${PROCEEDTOCHECKOUT4}
+    scroll to element    ${paybycheck}
+    click element    ${paybycheck}

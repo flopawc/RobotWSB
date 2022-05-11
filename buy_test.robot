@@ -7,19 +7,19 @@ Proceed through checkout
     set selenium implicit wait    12s
     Open browser to main page
     go to blouses page
-    scroll to element    ${SCROLL_HELP}
+    scroll to element    ${PRODUCT}
     mouse over    ${PRODUCT}
     click element    ${ADDBLOUSE}
-    wait until element is visible  ${proceedtocheckout}
+    get selenium implicit wait
     click element    ${proceedtocheckout}
-    sleep    8s
-    scroll to element    ${proceedtocheckout}
-    click element    ${proceedtocheckout}
-    Input email
-    Input password
-    log in
-    add comment     "witam państwa"
-    find element
+    title should be    Order - My Store
+    scroll to element    ${proceedtocheckout2}
+    click element    ${proceedtocheckout2}
+    Log in
+    go through checkout
+    run keyword and ignore error    page should contain    Check payment
+    click element    ${confirmorder}
+    page should contain    Your order on My Store is complete.
     close browser
 
 
